@@ -1,14 +1,9 @@
-﻿#NoEnv  ; Recommended for performance and compatibility with future AutoHotkey releases.
-; #Warn  ; Enable warnings to assist with detecting common errors.
-SendMode Input  ; Recommended for new scripts due to its superior speed and reliability.
-SetWorkingDir %A_ScriptDir%  ; Ensures a consistent starting directory.
-
-
-DetectHiddenWindows, Off
+﻿DetectHiddenWindows, Off
 SetKeyDelay, 100
 
 if !WinExist("InSpec")
 {
+	Msgbox, "Inspec is not running."
 	Exit
 }
 WinActivate
@@ -21,7 +16,7 @@ Try
 	Loop
 	{
 		Send, {F2}
-		ControlGetText, controlTextValue, WindowsForms10.Edit.app.0.378734a_r3_ad11, ahk_exe MicroVuTestHarness.exe
+		ControlGetText, controlTextValue, Edit1, ahk_exe InSpec.exe
 		if (controlTextValue = mostRecentValue)
 		{
 			SendInput {Esc}
@@ -33,7 +28,7 @@ Try
 			newTextValue := controlTextValue + 200
 			localFeatureName := new FeatureName(iterator, true, controlTextValue, newTextValue)
 			FeatureNameArray.Push(localFeatureName)
-			ControlSetText, WindowsForms10.Edit.app.0.378734a_r3_ad11, %newTextValue%, ahk_exe MicroVuTestHarness.exe
+			ControlSetText, Edit1, %newTextValue%, ahk_exe InSpec.exe
 			SendInput {Enter}
 		} 
 		else
@@ -60,7 +55,7 @@ Loop, %iterator%
 	if (localFeatureName.ShouldChange = true)
 	{
 		Send, {F2}
-		ControlSetText, WindowsForms10.Edit.app.0.378734a_r3_ad11, %A_Index%, ahk_exe MicroVuTestHarness.exe
+		ControlSetText, Edit1, %A_Index%, ahk_exe InSpec.exe
 		SendInput {Enter}
 	}
 	SendInput {Down}
